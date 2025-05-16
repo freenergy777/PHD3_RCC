@@ -8,3 +8,11 @@ Authors : Jaelim Sim, Changjun Lee, Soyeon Lim, [Hani Jieun Kim](https://scholar
 -`scRNA_data_processing_1.R` : Data pre-processing, normalization, dimensionality reduction, clustering, and differential expression after pseudo-time trajectory 
 
 -`scRNA_data_TF_GRN_inference.py` : Regulon activity inference after pruning, visualize regulon activity along pseudo-time
+
+## Dataset
+
+This project uses publicly available:
+- [The Cancer Genome Atlas](https://portal.gdc.cancer.gov/)
+- [single cell atlas of kidney cancer](https://www.sanger.ac.uk/collaboration/microenvironment-of-kidney-cancer/)
+
+📌 **Note**: These datasets are publicly accessible and can be used for research purposes.  
