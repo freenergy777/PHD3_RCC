@@ -5,13 +5,13 @@ Authors : Jaelim Sim, Changjun Lee, Soyeon Lim, [Hani Jieun Kim](https://scholar
 > Prolyl hydroxylase domain protein 3 (PHD3) is a central mediator of cellular oxygen sensing that modulates diverse metabolic pathways. In this study, we identify an unexpected subcellular behavior of PHD3, demonstrating its oxygen-dependent dual localization to the cytosol and mitochondrial matrix. This mitochondrial import is associated with liquid–liquid phase separation (LLPS), a biophysical process influenced by PHD3 hydroxylase activity and oxygen availability. Within mitochondria, PHD3 selectively hydroxylates biotin-dependent carboxylases, including pyruvate carboxylase (PC), leading to suppression of their enzymatic activity. In kidney cancers with elevated PHD3 expression, this modification restricts anaplerotic flux into the tricarboxylic acid (TCA) cycle, thereby impairing cell proliferation, reducing metastatic potential, and promoting apoptosis. Altogether, our study reveals a previously unrecognized mitochondrial localization of PHD3 and establishes a direct link between oxygen-regulated phase behavior, subcellular distribution, and metabolic regulation in clear cell renal cell carcinoma.
 
 ## Repository Structure
--`scRNA_data_processing_1.R` : Data pre-processing, normalization, dimensionality reduction, clustering, and differential expression after pseudo-time trajectory 
-
--`scRNA_data_TF_GRN_inference.py` : Regulon activity inference after pruning, visualize regulon activity along pseudo-time
+-`Fig.3_PHD3 Exhibits Substrate-Specific Hydroxylation Activity and Suppresses Mitochondrial Carboxylases in Renal Cancer.R`
+-`Fig.6_High PHD3 Expression Predicts Improved Patient Survival and Suppresses Metastatic Potential in ccRCC.R`
+-`Fig.S3_PHD3 Exhibits Substrate-Specific Hydroxylation Activity and Suppresses MitochondrialCarboxylases in Renal Cancer.R`
+-`Fig.S6_High PHD3 Expression Predicts Improved Patient Survival and Suppresses Metastatic Potential in ccRCC.R`
 
 ## Dataset
-
-This project uses publicly available:
+This project uses publicly available dataset: 
 - [The Cancer Genome Atlas](https://portal.gdc.cancer.gov/)
 - [single cell atlas of kidney cancer](https://www.sanger.ac.uk/collaboration/microenvironment-of-kidney-cancer/)
 
