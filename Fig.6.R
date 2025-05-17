@@ -105,6 +105,7 @@ tiff(filename = "umap_celltype.tiff", units= 'cm', width = 30, height = 20, res 
 tiff(filename = "umap_egln3.tiff", units= 'cm', width = 30, height = 20, res = 600)
 print(p1)
 dev.off()
+
 #################################################################
 dfqc[dfqc$gene == "EGLN3" & dfqc$major == "RCC",]
 mean(dfqc[dfqc$gene == "EGLN3" & dfqc$major %in% c("Epi_PT", "Epi_non-PT"),"proportion"])
