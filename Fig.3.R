@@ -53,12 +53,6 @@ data = data[, data$tissue_major %in% keep]
 # this brings down the number of cells from 187200 to 186610
 table(data$broad_type)
 
-PC_genes = c("PC","PCCA","PCCB","MCCC1","MCCC2","ACACA","ACACB")
-data$egln3 = logcounts(data)["EGLN3",] # genes are stored in row & cells are stored in column
-data$pc = logcounts(data)["PC",]
-data$pc_sig = colMeans(logcounts(data)[PC_genes,])
-data$coexp = data$egln3 > 0 & data$pc_sig > 0
-
 #################################################################
 # pre-processing & normalization
 data_seurat = do.call(cbind, lapply(unique(data$broad_type), function(x) {
@@ -86,13 +80,7 @@ data_seurat <- Seurat::as.Seurat(data_seurat, counts='counts', data = 'logcounts
 saveRDS(data_seurat, file = 'D:/2025.04/monocle3_practice/20250420_3k/20250420_3k_SCTransform_suera.rds')
 
 data_seurat <- readRDS('/home/hjlee/20250420_3k_SCTransform_suerat.rds')
-p <- DimPlot(data_seurat, reduction = "umap", group.by = "broad_type") 
-print(p)
-p <- DimPlot(data_seurat, reduction = "umap", group.by = "broad_type") +
-  geom_segment(aes(x = -10, xend = 10, y = -10, yend = -10), inherit.aes = FALSE, size = 0.8, color = 'black') +
-  geom_segment(aes(x = -10, xend = -10, y = -10, yend = 10), inherit.aes = FALSE, size = 0.8, color = 'black') +
-  coord_cartesian(xlim = c(-10, 10), ylim = c(-10, 10))
-
+DimPlot(data_seurat, reduction = "umap", group.by = "broad_type") 
 DimPlot(data_seurat, reduction = "umap", group.by = "summaryDescription")
 
 #################################################################
