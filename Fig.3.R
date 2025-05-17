@@ -114,9 +114,7 @@ p1 <- p1 + scale_fill_manual(values = c('Negative'='skyblue3', 'Positive'='red1'
 ggarrange(p1)
 
 # Gene expression
-
 dfqc = do.call(rbind, lapply(keep, function(x) {
-  
   idx = data$tissue_major == x
   data_subset = logcounts(data[c(goi, PC_genes), idx])
   
@@ -127,7 +125,6 @@ dfqc = do.call(rbind, lapply(keep, function(x) {
     prop = rowSums(data_subset > 0)/ncol(data_subset)
   )
   return(df)
-  
 }))
 
 dfqc$variable = as.character(dfqc$label)
@@ -145,7 +142,6 @@ dfqc$type = factor(dfqc$type, levels = c("Normal", "Adjacent","Tumour", "Metasta
 
 dfqc$major = factor(dfqc$major, levels = c("RCC", "Epi_PT", "Epi_non-PT", "EC", "Fibro", "T-cell", "B-cell",
                                            "Myeloid", "NK", "Plasma", "Mast","pDC"))
-
 p1 = dfqc %>%
   filter(gene != "EGLN3") %>%
   ggplot(aes(x = type, y = gene, col = mean, size = prop)) + 
@@ -158,21 +154,6 @@ p2 = dfqc %>%
   geom_point() + scale_color_distiller(palette = "Spectral") + 
   theme(axis.text.x = element_text(angle = 90)) + facet_wrap(~major, ncol = 12)
 
-p1 %>% ggsave(filename = "markers1.pdf", width = 14, height = 2.8)
-p2 %>% ggsave(filename = "markers2.pdf", width = 14, height = 2)
-
-dfqc[dfqc$gene == "EGLN3" & dfqc$major == "RCC",]
-mean(dfqc[dfqc$gene == "EGLN3" & dfqc$major %in% c("Epi_PT", "Epi_non-PT"),"prop"])
-
-dfqc2 = dfqc %>%
-  group_by(major, gene) %>%
-  summarise(prop = mean(prop))
-
-propviz = dfqc2 %>%
-  filter(gene == "EGLN3") %>%
-  ggplot(aes(reorder(major, prop, max), prop, fill = major)) + 
-  geom_col() + ylab("Proportion of cells expressing EGLN3") + 
-  scale_fill_manual(values = broad_col) +
-  theme(axis.title.x = element_blank(), axis.text.x = element_text(angle = 90))
-
-propviz %>% ggsave(filename = "prop.pdf", width = 5, height = 5)
+tiff(filename = "dotplot_w_egln3.tiff", units= 'cm', width = 30, height = 10, res = 300)
+print(p2)
+dev.off()
