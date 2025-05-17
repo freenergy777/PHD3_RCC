@@ -105,4 +105,18 @@ tiff(filename = "umap_celltype.tiff", units= 'cm', width = 30, height = 20, res 
 tiff(filename = "umap_egln3.tiff", units= 'cm', width = 30, height = 20, res = 600)
 print(p1)
 dev.off()
+#################################################################
+dfqc[dfqc$gene == "EGLN3" & dfqc$major == "RCC",]
+mean(dfqc[dfqc$gene == "EGLN3" & dfqc$major %in% c("Epi_PT", "Epi_non-PT"),"proportion"])
 
+dfqc2 = dfqc %>%
+  group_by(major, gene) %>%
+  summarise(proportion = mean(proportion))
+
+propviz = dfqc2 %>%
+  filter(gene == "EGLN3") %>%
+  ggplot(aes(reorder(major, proportion, max), proportion, fill = major)) + 
+  geom_col() + ylab("Proportion of cells expressing EGLN3") + 
+  scale_fill_manual(values = broad_col) +
+  theme(axis.title.x = element_blank(), axis.text.x = element_text(angle = 90))
+print(propviz)
