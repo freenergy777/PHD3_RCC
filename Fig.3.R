@@ -113,6 +113,7 @@ p1 <- ggboxplot(dfumap_RCCs_filtered, x='EGLN3_expression', y='pc_sig', width = 
 p1 <- p1 + scale_fill_manual(values = c('Negative'='skyblue3', 'Positive'='red1'))
 ggarrange(p1)
 
+#################################################################
 # Gene expression
 dfqc = do.call(rbind, lapply(keep, function(x) {
   idx = data$tissue_major == x
