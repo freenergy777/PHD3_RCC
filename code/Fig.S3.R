@@ -7,6 +7,7 @@ suppressPackageStartupMessages({
   library(DESeq2)
   library(R.utils)
   library(org.Hs.eg.db)
+  library(pheatmap)
   library(tidyverse)
   library(pheatmap)
   library(ggpubr)
@@ -40,6 +41,29 @@ dim(cnt_KIRC) # dimesion check for cnt_KIRC
 dim(design) # dimesion check for design matrix
 rownames(design) <- colnames(cnt_KIRC)
 
+#################################################################
+KIRC_TMM <- read_excel("KIRC_TMM.xlsx")
+KIRC_TMM_BC_domain <- as.data.frame(KIRC_TMM)
+KIRC_TMM_BC_domain <- column_to_rownames(KIRC_TMM_BC_domain, var = 'Label')
+KIRC_TMM_BC_domain_t <- t(KIRC_TMM_BC_domain)
+
+annotation_col <- data.frame(
+  CellType = c(rep('Solid Tissue Normal', 73), rep('Primary solid Tumor', 540)),
+  row.names = colnames(KIRC_TMM_BC_domain_t))
+
+plot <- pheatmap(KIRC_TMM_BC_domain_t,
+                 scale = 'column',
+                 color = colorRampPalette(c('steelblue3','white','tomato3'))(100),
+                 main = 'TMM data retrieved from patient RNA-seq data',
+                 show_colnames = F,
+                 cluster_cols = F,
+                 annotation_col = annotation_col)
+tiff(filename = "heatmap_S3f_1.tiff", units= 'cm', width = 15, height = 6, res = 300)
+print(plot)
+dev.off()
+
+#################################################################
+# TMM normalization
 dge <- DGEList(counts = cnt_KIRC, group = group)
 dge <- calcNormFactors(dge, method = 'TMM')
 
@@ -72,13 +96,13 @@ res_limma_with_gene_ID <- merge(gene_ID, res_limma, by = 'ensembl_gene_id')
 rows_to_move <- c(5942,6882,27253,1379,6267,1321,28833,4140,13087,12830)
 res_limma_with_gene_ID_egln <-res_limma_with_gene_ID[rows_to_move,]
 res_limma_with_gene_ID_remain <- res_limma_with_gene_ID[!res_limma_with_gene_ID$external_gene_name %in% 
-                                                          c('EGLN3', 'EGLN2','EGLN1','PCCA', 'PCCB', 'MCCC1','MCCC2','PC','ACACA','ACACB'),]
+                                                          c('EGLN3', 'EGLN2','EGLN1','PCCA', 'PCCB', 'MCCC1','PC','ACACA','ACACB'),]
 res_limma_with_gene_ID_final <- rbind(res_limma_with_gene_ID_remain, res_limma_with_gene_ID_egln)
 rownames(res_limma_with_gene_ID_final) <- NULL
 
 keyvals.colour <- ifelse(is.na(res_limma_with_gene_ID_final$external_gene_name), 'gray100',
                          ifelse(res_limma_with_gene_ID_final$external_gene_name %in% c('EGLN3', 'EGLN2'), 'tomato3', 
-                                ifelse(res_limma_with_gene_ID_final$external_gene_name %in% c('PCCA', 'PCCB', 'MCCC1','MCCC2','PC'), 'steelblue3','gray100')))
+                                ifelse(res_limma_with_gene_ID_final$external_gene_name %in% c('PCCA', 'PCCB', 'MCCC1','PC', 'ACACB'), 'steelblue3','gray100')))
 
 keyvals.colour[is.na(keyvals.colour)] <- 'gray100' <- 'NA'
 names(keyvals.colour)[keyvals.colour == 'tomato3'] <- 'up-regulated gene expression'
@@ -88,14 +112,22 @@ p <- EnhancedVolcano(res_limma_with_gene_ID_final,
                      lab = NA,
                      x = 'logFC',
                      y = 'adj.P.Val', 
-                     title = 'DE analysis in TCGA-KIRC',
+                     title = 'Differenrial mRNA expression',
+                     subtitle = 'bulk RNA-seq',
                      pCutoff = 1e-2, 
                      FCcutoff = 1.0,
                      colAlpha = 0.8,
+                     labSize = 1,
                      colCustom = keyvals.colour,
                      cutoffLineType = 'twodash',
                      legendPosition = 'right')
 
 p <- p + theme(panel.grid.major = element_blank(),
                panel.grid.minor = element_blank()) 
+p <- p + scale_x_continuous(
+  limits = c(-15, 15),
+  breaks = c(-10, -5, -1, 0, 1, 5, 10))
 print(p)
+tiff(filename = "volcanoplot_S3E.tiff", units= 'cm', width = 30, height = 20, res = 300)
+print(p)
+dev.off()
