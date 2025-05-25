@@ -9,7 +9,7 @@ Authors : Jaelim Sim, Changjun Lee, Soyeon Lim, [Hani Jieun Kim](https://scholar
 
 -`Fig.6.R` : non-linear dimensionality reduction, proportion of cells expressing EGLN3 per cell type, pathway enrichment, and marker gene expression
 
--`Fig.S3.R` : differential expression of EGLN3 and BC-domain genes
+-`Fig.S3.R` : differential expression of EGLN3 and BC-domain genes for volcano plot and heatmap visualization
 
 -`Fig.S6.R` : survival analysis of EGLN3 and variance stabilizing transformed gene expression between M0 and M1 group derived from TCGA-KIRC dataset
 
